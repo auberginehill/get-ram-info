@@ -28,7 +28,7 @@
    </tr>
    <tr>
       <td style="padding:6px"><strong>Description:</strong></td>
-      <td style="padding:6px">Get-RAMInfo uses Windows Management Instrumentation (WMI) to retrieve basic memory information and displays the results on-screen.</td>
+      <td style="padding:6px">Get-RAMInfo uses Windows Management Instrumentation (WMI) to retrieve basic memory information and displays the results in console.</td>
    </tr>
    <tr>
       <td style="padding:6px"><strong>Homepage:</strong></td>
