@@ -140,7 +140,7 @@ Retrieves basic memory information.
 
 .DESCRIPTION
 Get-RAMInfo uses Windows Management Instrumentation (WMI) to retrieve basic
-memory information and displays the results on-screen.
+memory information and displays the results in console.
 
 .OUTPUTS
 Displays general memory information in console.
