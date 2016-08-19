@@ -4,7 +4,9 @@ Get-RAMInfo.ps1
 
 
 $path = $env:temp
+$computer = $env:COMPUTERNAME
 $timestamp = Get-Date -UFormat "%Y%m%d"
+$empty_line = ""
 
 
 # Function used to convert bytes to MB or GB or TB                                            # Credit: clayman2: "Disk Space"
@@ -30,9 +32,6 @@ function ConvertBytes {
 } # function
 
 
-
-
-$computer = $env:COMPUTERNAME
 $obj_memory = @()
 $memory = Get-WmiObject -Class Win32_PhysicalMemory -ComputerName $computer
 
@@ -41,15 +40,15 @@ $memory = Get-WmiObject -Class Win32_PhysicalMemory -ComputerName $computer
         $obj_memory += New-Object -TypeName PSCustomObject -Property @{
 
 
-                                'Capacity'      = (ConvertBytes($memblock.Capacity))
-                                'Capacity (GB)' = $memblock.Capacity / 1GB
-                                'Computer'      = $memblock.__SERVER
-                                'Location'      = $memblock.DeviceLocator
-                                'Manufacturer'  = $memblock.Manufacturer
-                                'Part Number'   = $memblock.PartNumber
-                                'Serial Number' = $memblock.SerialNumber
-                                'Speed'         = [string]($memblock.Speed) + ' MHz'
-                                'Type'          = $memblock.Name
+                                'Capacity'          = (ConvertBytes($memblock.Capacity))
+                                'Capacity (GB)'     = $memblock.Capacity / 1GB
+                                'Computer'          = $memblock.__SERVER
+                                'Location'          = $memblock.DeviceLocator
+                                'Manufacturer'      = $memblock.Manufacturer
+                                'Part Number'       = $memblock.PartNumber
+                                'Serial Number'     = $memblock.SerialNumber
+                                'Speed'             = [string]($memblock.Speed) + ' MHz'
+                                'Type'              = $memblock.Name
 
 
                             } # New-Object
@@ -60,9 +59,21 @@ $memory = Get-WmiObject -Class Win32_PhysicalMemory -ComputerName $computer
     } # foreach
 
 
+# Write the memory block results in console
+Write-Output $empty_line
+Write-Output $empty_line
+Write-Output $empty_line
 Write-Output $obj_memory_selection | Format-Table -auto
 
-$obj_memory | Measure-Object -Property 'Capacity (GB)' -Sum | select -Property @{label='Computer';Expression={$computer}},@{label='Slots in Use';Expression={
+
+# Gather some data for a first summary table
+$os = Get-WmiObject -Class Win32_OperatingSystem -ComputerName $computer 
+$used_memory_perc = $os | Select-Object @{Label='UsedMemoryPerc'; Expression={"{0:N1}" -f ((($_.TotalVisibleMemorySize - $_.FreePhysicalMemory) / $_.TotalVisibleMemorySize) * 100) }}
+$used_memory = $os | Select-Object @{Label='UsedMemory'; Expression={(($_.TotalVisibleMemorySize * 1kb) - ($_.FreePhysicalMemory) * 1kb) }}
+$available_memory_perc = $os | Select-Object @{Label='AvailableMemoryPerc'; Expression={"{0:N1}" -f ((($os.FreePhysicalMemory) / ($os.TotalVisibleMemorySize)) * 100) }}
+
+
+$summary_table = $obj_memory | Measure-Object -Property 'Capacity (GB)' -Sum | Select-Object -Property @{Label='Computer';Expression={$computer}},@{Label='Slots in Use';Expression={
 
 
                                 If ($_.count -ge 2) {
@@ -70,15 +81,34 @@ $obj_memory | Measure-Object -Property 'Capacity (GB)' -Sum | select -Property @
                                 } ElseIf ($_.count -eq 1) {
                                     [string]$_.count + ' Slot'
                                 } ElseIf ($_.count -eq 0) {
-                                    [string]'All Memory Slots are empty'
+                                    [string]'All memory slots seem to be empty.'
                                 } Else {
                                     [string]''
                                 } # else
 
 
-        }},@{label='Total Physical Memory';Expression={[string]$_.sum + ' GB'}}
+        }},@{Label='Total Physical Memory';Expression={[string]$_.sum + ' GB'}},@{Label='Memory in Use';Expression={(ConvertBytes($($used_memory.UsedMemory)))}},@{Label='Memory in Use (%)';Expression={"$($used_memory_perc.UsedMemoryPerc) %"}},@{Label='Available Memory';Expression={(ConvertBytes($os.FreePhysicalMemory * 1kb))}},@{Label='Available Memory (%)';Expression={"$($available_memory_perc.AvailableMemoryPerc) %"}}
 
 
+# Write the first summary table in console
+Write-Output $empty_line
+Write-Output $summary_table | Format-Table -auto
+
+
+# Gather some data for a second summary table
+$gps = Get-Process | Measure-Object -Property ProcessName
+$average_load = Get-WmiObject -Class Win32_Processor -ComputerName $computer | Measure-Object -property LoadPercentage -Average
+$used_perc = Get-WmiObject -Class Win32_Volume -ComputerName $computer -Filter "DriveLetter = 'C:'" | Select-Object @{Label='C_Drive'; Expression={"{0:N1}" -f  ((($_.Capacity - $_.FreeSpace) / $_.Capacity) * 100) }}
+
+
+# Write the second summary table in console
+Write-Output $empty_line
+Write-Output $empty_line
+Write-Output "Processes: $($gps.Count)         Average CPU Load: $($average_load.Average) %         Physical Memory in Use: $($used_memory_perc.UsedMemoryPerc) %        C:-Drive Usage: $($used_perc.C_Drive) %"
+Write-Output $empty_line
+Write-Output $empty_line
+Write-Output $empty_line
+Write-Output $empty_line
 
 
 
