@@ -69,7 +69,7 @@
         <th>:arrow_right:</th>
         <td style="padding:6px">
             <ul>
-                <li>Displays general memory information in console.</li>
+                <li>Displays general memory information, such as used Memory Slots and Capacity, Speed, Manufacturer, Part Number, Type and Serial Number of individual Memory Modules and also Total number of Memory Slots in Use, Total Physical Memory and both Memory in Use and Available Memory as Size and as Percentage, Number of Processes running, Average CPU Load, Physical Memory in Use and C:-Drive Usage in console.</li>
             </ul>
         </td>
     </tr>
