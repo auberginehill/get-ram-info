@@ -173,7 +173,11 @@ Get-RAMInfo uses Windows Management Instrumentation (WMI) to retrieve basic
 memory information and displays the results in console.
 
 .OUTPUTS
-Displays general memory information in console.
+Displays general memory information, such as used Memory Slots and Capacity, Speed, Manufacturer, 
+Part Number, Type and Serial Number of individual Memory Modules and also Total number of Memory 
+Slots in Use, Total Physical Memory and both Memory in Use and Available Memory as Size and as 
+Percentage, Number of Processes running, Average CPU Load, Physical Memory in Use and 
+C:-Drive Usage in console.
 
 .NOTES
 Please note that the optional file listed under Options-header will(, if the option is enabled by
