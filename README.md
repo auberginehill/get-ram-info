@@ -216,12 +216,15 @@
         <td style="padding:6px"><a href="https://github.com/auberginehill/get-ram-info">Script Homepage</a></td>
     </tr>
     <tr>
-        <th rowspan="8"></th>
+        <th rowspan="3"></th>
         <td style="padding:6px">clayman2: <a href="http://powershell.com/cs/media/p/7476.aspx">Disk Space</a></td>
     </tr>
     <tr>
         <td style="padding:6px"><a href="http://stackoverflow.com/questions/37756770/getting-ram-info-powershell">Getting RAM info - Powershell</a></td>
     </tr>
+    <tr>
+        <td style="padding:6px"><a href="https://msdn.microsoft.com/en-us/library/aa394347(v=vs.85).aspx">Win32_PhysicalMemory class</a></td>
+    </tr>    
 </table>
 
 
