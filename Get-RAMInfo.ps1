@@ -32,28 +32,88 @@ function ConvertBytes {
 } # function
 
 
+
+
 $obj_memory = @()
 $memory = Get-WmiObject -Class Win32_PhysicalMemory -ComputerName $computer
 
     ForEach ($memblock in $memory) {
 
+
+        # Memory type
+        Switch ($memblock.FormFactor) {
+            { $_ -lt 0 } { $memory_type = "" }              
+            { $_ -eq 0 } { $memory_type = "Unknown" }            
+            { $_ -eq 1 } { $memory_type = "Other" }
+            { $_ -eq 2 } { $memory_type = "SIP" }
+            { $_ -eq 3 } { $memory_type = "DIP " }
+            { $_ -eq 4 } { $memory_type = "ZIP" }
+            { $_ -eq 5 } { $memory_type = "SOJ" }
+            { $_ -eq 6 } { $memory_type = "Proprietary" }
+            { $_ -eq 7 } { $memory_type = "SIMM" }
+            { $_ -eq 8 } { $memory_type = "DIMM" }
+            { $_ -eq 9 } { $memory_type = "TSOP" }
+            { $_ -eq 10 } { $memory_type = "PGA" }
+            { $_ -eq 11 } { $memory_type = "RIMM" }
+            { $_ -eq 12 } { $memory_type = "SODIMM" }
+            { $_ -eq 13 } { $memory_type = "SRIMM" }
+            { $_ -eq 14 } { $memory_type = "SMD" }
+            { $_ -eq 15 } { $memory_type = "SSMP" }
+            { $_ -eq 16 } { $memory_type = "QFP" }
+            { $_ -eq 17 } { $memory_type = "TQFP" }
+            { $_ -eq 18 } { $memory_type = "SOIC" }
+            { $_ -eq 19 } { $memory_type = "LCC" }
+            { $_ -eq 20 } { $memory_type = "PLCC" }
+            { $_ -eq 21 } { $memory_type = "BGA" }
+            { $_ -eq 22 } { $memory_type = "FPBGA" }
+            { $_ -eq 23 } { $memory_type = "LGA" }
+            { $_ -gt 23 } { $memory_type = "" }            
+        } # switch formfactor
+
+
+
+
+        # Type Detail
+        Switch ($memblock.TypeDetail) {
+            { $_ -lt 1 } { $type_detail = "" }              
+            { $_ -eq 1 } { $type_detail = "Reserved" }            
+            { $_ -eq 2 } { $type_detail = "Other" }
+            { $_ -eq 4 } { $type_detail = "Unknown" }
+            { $_ -eq 8 } { $type_detail = "Fast-paged" }
+            { $_ -eq 16 } { $type_detail = "Static column" }
+            { $_ -eq 32 } { $type_detail = "Pseudo-static" }
+            { $_ -eq 64 } { $type_detail = "RAMBUS" }
+            { $_ -eq 128 } { $type_detail = "Synchronous" }
+            { $_ -eq 256 } { $type_detail = "CMOS" }
+            { $_ -eq 512 } { $type_detail = "EDO" }
+            { $_ -eq 1024 } { $type_detail = "Window DRAM" }
+            { $_ -eq 2048 } { $type_detail = "Cache DRAM" }
+            { $_ -eq 4096 } { $type_detail = "Non-volatile" }
+            { $_ -gt 4096 } { $type_detail = "" }              
+        } # switch typedetail
+
+
+
+
         $obj_memory += New-Object -TypeName PSCustomObject -Property @{
 
 
-                                'Capacity'          = (ConvertBytes($memblock.Capacity))
-                                'Capacity (GB)'     = $memblock.Capacity / 1GB
-                                'Computer'          = $memblock.__SERVER
-                                'Location'          = $memblock.DeviceLocator
-                                'Manufacturer'      = $memblock.Manufacturer
-                                'Part Number'       = $memblock.PartNumber
-                                'Serial Number'     = $memblock.SerialNumber
-                                'Speed'             = [string]($memblock.Speed) + ' MHz'
-                                'Type'              = $memblock.Name
+                        'Capacity (GB)'     = $memblock.Capacity / 1GB
+                        'Class'             = $memblock.Name
+                        'Computer'          = $memblock.__SERVER
+                        'Location'          = $memblock.DeviceLocator
+                        'Manufacturer'      = $memblock.Manufacturer
+                        'Memory Type'       = $memory_type                                
+                        'Part Number'       = $memblock.PartNumber
+                        'RAM Type'          = $memory_type + ' ' + (ConvertBytes($memblock.Capacity)) + ' (' + ($memblock.Speed) + ' MHz)'
+                        'Serial Number'     = $memblock.SerialNumber
+                        'Speed'             = [string]($memblock.Speed) + ' MHz'
+                        'Type Detail'       = $type_detail
 
 
-                            } # New-Object
-                        $obj_memory.PSObject.TypeNames.Insert(0,"Memory")
-                        $obj_memory_selection = $obj_memory | Select-Object 'Computer','Location','Capacity','Speed','Manufacturer','Part Number','Type','Serial Number'
+                    } # New-Object
+                $obj_memory.PSObject.TypeNames.Insert(0,"Memory")
+                $obj_memory_selection = $obj_memory | Select-Object 'Computer','Location','RAM Type','Manufacturer','Part Number','Class','Serial Number'
 
 
     } # foreach
@@ -66,20 +126,49 @@ Write-Output $empty_line
 Write-Output $obj_memory_selection | Format-Table -auto
 
 
+
+
 # Gather some data for a first summary table
 $os = Get-WmiObject -Class Win32_OperatingSystem -ComputerName $computer 
-$used_memory_perc = $os | Select-Object @{Label='UsedMemoryPerc'; Expression={"{0:N1}" -f ((($_.TotalVisibleMemorySize - $_.FreePhysicalMemory) / $_.TotalVisibleMemorySize) * 100) }}
-$used_memory = $os | Select-Object @{Label='UsedMemory'; Expression={(($_.TotalVisibleMemorySize * 1kb) - ($_.FreePhysicalMemory) * 1kb) }}
-$available_memory_perc = $os | Select-Object @{Label='AvailableMemoryPerc'; Expression={"{0:N1}" -f ((($os.FreePhysicalMemory) / ($os.TotalVisibleMemorySize)) * 100) }}
+$used_memory_perc = $os | Select-Object @{Label='UsedMemoryPerc'; 
+                                Expression={"{0:N1}" -f ((($_.TotalVisibleMemorySize - $_.FreePhysicalMemory) / $_.TotalVisibleMemorySize) * 100) }}
+
+$used_memory = $os | Select-Object @{Label='UsedMemory'; 
+                                Expression={(($_.TotalVisibleMemorySize * 1kb) - ($_.FreePhysicalMemory) * 1kb) }}
+
+$available_memory_perc = $os | Select-Object @{Label='AvailableMemoryPerc'; 
+                                Expression={"{0:N1}" -f ((($os.FreePhysicalMemory) / ($os.TotalVisibleMemorySize)) * 100) }}
+
+$arrays = Get-WmiObject -Class Win32_PhysicalMemoryArray -computerName $computer
+$number_of_arrays = ($arrays | Measure-Object).Count
+$slots = 0
+
+    ForEach ($array In $arrays) { $slots += $array.MemoryDevices }
 
 
-$summary_table = $obj_memory | Measure-Object -Property 'Capacity (GB)' -Sum | Select-Object -Property @{Label='Computer';Expression={$computer}},@{Label='Slots in Use';Expression={
+
+
+$summary_table = $obj_memory | Measure-Object -Property 'Capacity (GB)' -Sum | Select-Object -Property @{Label='Computer'; Expression={$computer}},@{Label='Total Slots'; Expression={
+
+
+                                If ($slots -ge 2) {
+                                    [string]$slots + ' Slots'
+                                } ElseIf ($slots -eq 1) {
+                                    [string]'1 Slot'
+                                } ElseIf ($slots -eq 0) {
+                                    [string]'Did not detected any memory slots.'
+                                } Else {
+                                    [string]''
+                                } # else
+
+
+        }},@{Label='Slots in Use'; Expression={
 
 
                                 If ($_.count -ge 2) {
                                     [string]$_.count + ' Slots'
                                 } ElseIf ($_.count -eq 1) {
-                                    [string]$_.count + ' Slot'
+                                    [string]'1 Slot'
                                 } ElseIf ($_.count -eq 0) {
                                     [string]'All memory slots seem to be empty.'
                                 } Else {
@@ -87,7 +176,27 @@ $summary_table = $obj_memory | Measure-Object -Property 'Capacity (GB)' -Sum | S
                                 } # else
 
 
-        }},@{Label='Total Physical Memory';Expression={[string]$_.sum + ' GB'}},@{Label='Memory in Use';Expression={(ConvertBytes($($used_memory.UsedMemory)))}},@{Label='Memory in Use (%)';Expression={"$($used_memory_perc.UsedMemoryPerc) %"}},@{Label='Available Memory';Expression={(ConvertBytes($os.FreePhysicalMemory * 1kb))}},@{Label='Available Memory (%)';Expression={"$($available_memory_perc.AvailableMemoryPerc) %"}}
+        }},@{Label='Free Slots'; Expression={
+            
+            
+                                If ($slots - $_.count -ge 2) {
+                                    [string]$slots - $_.count + ' Slots'
+                                } ElseIf ($slots - $_.count -eq 1) {
+                                    [string]'1 Slot'
+                                } ElseIf ($slots - $_.count -eq 0) {
+                                    [string]'None'
+                                } Else {
+                                    [string]''
+                                } # else     
+            
+            
+            
+        }},@{Label='Total Memory'; 
+            Expression={[string]$_.sum + ' GB'}},
+        @{Label='Memory in Use'; 
+            Expression={"$(ConvertBytes($($used_memory.UsedMemory)))" + " ($($used_memory_perc.UsedMemoryPerc) %)"}}, 
+        @{Label='Available Memory'; 
+            Expression={"$(ConvertBytes($os.FreePhysicalMemory * 1kb))" + " ($($available_memory_perc.AvailableMemoryPerc) %)"}}
 
 
 # Write the first summary table in console
@@ -95,16 +204,19 @@ Write-Output $empty_line
 Write-Output $summary_table | Format-Table -auto
 
 
+
+
 # Gather some data for a second summary table
 $gps = Get-Process | Measure-Object -Property ProcessName
 $average_load = Get-WmiObject -Class Win32_Processor -ComputerName $computer | Measure-Object -property LoadPercentage -Average
-$used_perc = Get-WmiObject -Class Win32_Volume -ComputerName $computer -Filter "DriveLetter = 'C:'" | Select-Object @{Label='C_Drive'; Expression={"{0:N1}" -f  ((($_.Capacity - $_.FreeSpace) / $_.Capacity) * 100) }}
+$used_perc = Get-WmiObject -Class Win32_Volume -ComputerName $computer -Filter "DriveLetter = 'C:'" | Select-Object @{Label='C_Drive'; 
+                                Expression={"{0:N1}" -f ((($_.Capacity - $_.FreeSpace) / $_.Capacity) * 100) }}
 
 
 # Write the second summary table in console
 Write-Output $empty_line
 Write-Output $empty_line
-Write-Output "Processes: $($gps.Count)         Average CPU Load: $($average_load.Average) %         Physical Memory in Use: $($used_memory_perc.UsedMemoryPerc) %        C:-Drive Usage: $($used_perc.C_Drive) %"
+Write-Output "Processes: $($gps.Count)         Average CPU Load: $($average_load.Average) %         C:-Drive Usage: $($used_perc.C_Drive) %        Physical Memory in Use: $($used_memory_perc.UsedMemoryPerc) %"
 Write-Output $empty_line
 Write-Output $empty_line
 Write-Output $empty_line
@@ -173,11 +285,11 @@ Get-RAMInfo uses Windows Management Instrumentation (WMI) to retrieve basic
 memory information and displays the results in console.
 
 .OUTPUTS
-Displays general memory information, such as used Memory Slots and Capacity, Speed, Manufacturer, 
-Part Number, Type and Serial Number of individual Memory Modules and also Total number of Memory 
-Slots in Use, Total Physical Memory and both Memory in Use and Available Memory as Size and as 
-Percentage, Number of Processes running, Average CPU Load, Physical Memory in Use and 
-C:-Drive Usage in console.
+Displays general memory information, such as used Memory Slots (Location) and RAM Type, Capacity, 
+Speed, Manufacturer, Part Number, Memory Class and Serial Number of individual Memory Modules and 
+also Total number of Memory Slots, Total number of Memory Slots in Use, Total Amount of Free Memory 
+Slots, Total Physical Memory and both Memory in Use and Available Memory as Size and as Percentage, 
+Number of Processes running, Average CPU Load, Physical Memory in Use and C:-Drive Usage in console.
 
 .NOTES
 Please note that the optional file listed under Options-header will(, if the option is enabled by
@@ -241,5 +353,6 @@ For more information, please type "help New-Item -Full".
 .LINK
 http://powershell.com/cs/media/p/7476.aspx
 http://stackoverflow.com/questions/37756770/getting-ram-info-powershell
+https://msdn.microsoft.com/en-us/library/aa394347(v=vs.85).aspx
 
 #>
