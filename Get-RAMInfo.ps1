@@ -297,7 +297,10 @@ copy-pasting the relevant code above the [End of Line] -marker) be created in a 
 specified with the $path variable (at line 6). The $env:temp variable points to the current temp
 folder. The default value of the $env:temp variable is C:\Users\<username>\AppData\Local\Temp
 (i.e. each user account has their own separate temp folder at path %USERPROFILE%\AppData\Local\Temp).
-To change the temp folder for instance to C:\Temp, please, for example, follow the instructions at
+To see the current temp path, for instance a command
+    [System.IO.Path]::GetTempPath()
+may be used at the PowerShell prompt window [PS>]. To change the temp folder for instance 
+to C:\Temp, please, for example, follow the instructions at
 http://www.eightforums.com/tutorials/23500-temporary-files-folder-change-location-windows.html
 
     Homepage:           https://github.com/auberginehill/get-ram-info
