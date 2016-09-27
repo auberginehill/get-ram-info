@@ -66,8 +66,9 @@
 
 ### Screenshot
 
+<ol><ol><ol>
 <img class="screenshot" title="screenshot" alt="screenshot" height="80%" width="80%" src="https://raw.githubusercontent.com/auberginehill/get-ram-info/master/Get-RAMInfo.png">
-
+</ol></ol></ol>
 
 
 
