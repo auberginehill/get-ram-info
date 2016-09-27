@@ -64,6 +64,13 @@
 
 
 
+### Screenshot
+
+<img class="screenshot" title="screenshot" alt="screenshot" height="100%" width="100%" src="https://raw.githubusercontent.com/auberginehill/get-ram-info/master/Get-RAMInfo.png">
+
+
+
+
 ### Outputs
 
 <table>
