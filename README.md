@@ -1,15 +1,17 @@
-<!-- Visual Studio Code: For a more comfortable reading experience, use the key combination Ctrl + Shift + V 
-     Visual Studio Code: To crop the tailing end space characters out, please use the key combination Ctrl + Shift + X
+<!-- Visual Studio Code: For a more comfortable reading experience, use the key combination Ctrl + Shift + V
+     Visual Studio Code: To crop the tailing end space characters out, please use the key combination Ctrl + A Ctrl + K Ctrl + X (Formerly Ctrl + Shift + X)
      Visual Studio Code: To improve the formatting of HTML code, press Shift + Alt + F and the selected area will be reformatted in a html file.
+     Visual Studio Code shortcuts: http://code.visualstudio.com/docs/customization/keybindings (or https://aka.ms/vscodekeybindings)
+     Visual Studio Code shortcut PDF (Windows): https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf
 
-   _____      _          _____            __  __ _____        __      
-  / ____|    | |        |  __ \     /\   |  \/  |_   _|      / _|     
- | |  __  ___| |_ ______| |__) |   /  \  | \  / | | |  _ __ | |_ ___  
- | | |_ |/ _ \ __|______|  _  /   / /\ \ | |\/| | | | | '_ \|  _/ _ \ 
+   _____      _          _____            __  __ _____        __
+  / ____|    | |        |  __ \     /\   |  \/  |_   _|      / _|
+ | |  __  ___| |_ ______| |__) |   /  \  | \  / | | |  _ __ | |_ ___
+ | | |_ |/ _ \ __|______|  _  /   / /\ \ | |\/| | | | | '_ \|  _/ _ \
  | |__| |  __/ |_       | | \ \  / ____ \| |  | |_| |_| | | | || (_) |
   \_____|\___|\__|      |_|  \_\/_/    \_\_|  |_|_____|_| |_|_| \___/                               -->
-                                                                      
-                                                                      
+
+
 
 
 
@@ -34,11 +36,12 @@
    </tr>
    <tr>
       <td style="padding:6px"><strong>Homepage:</strong></td>
-      <td style="padding:6px"><a href="https://github.com/auberginehill/get-ram-info">https://github.com/auberginehill/get-ram-info</a></td>
+      <td style="padding:6px"><a href="https://github.com/auberginehill/get-ram-info">https://github.com/auberginehill/get-ram-info</a>
+      <br />Short URL: <a href="http://tinyurl.com/hdt9cet">http://tinyurl.com/hdt9cet</a></td>
    </tr>
    <tr>
       <td style="padding:6px"><strong>Version:</strong></td>
-      <td style="padding:6px">1.0</td>
+      <td style="padding:6px">1.1</td>
    </tr>
    <tr>
         <td style="padding:6px"><strong>Sources:</strong></td>
@@ -46,19 +49,19 @@
             <table>
                 <tr>
                     <td style="padding:6px">Emojis:</td>
-                    <td style="padding:6px"><a href="https://api.github.com/emojis">https://api.github.com/emojis</a></td>
-                </tr>                    
+                    <td style="padding:6px"><a href="https://github.com/auberginehill/emoji-table">Emoji Table</a></td>
+                </tr>
                 <tr>
-                    <td style="padding:6px">clayman2:</td>                
-                    <td style="padding:6px"><a href="http://powershell.com/cs/media/p/7476.aspx">Disk Space</a></td>  
+                    <td style="padding:6px">clayman2:</td>
+                    <td style="padding:6px"><a href="http://powershell.com/cs/media/p/7476.aspx">Disk Space</a></td>
                 </tr>
             </table>
         </td>
-   </tr> 
+   </tr>
    <tr>
       <td style="padding:6px"><strong>Downloads:</strong></td>
       <td style="padding:6px">For instance <a href="https://raw.githubusercontent.com/auberginehill/get-ram-info/master/Get-RAMInfo.ps1">Get-RAMInfo.ps1</a>. Or <a href="https://github.com/auberginehill/get-ram-info/archive/master.zip">everything as a .zip-file</a>.</td>
-   </tr> 
+   </tr>
 </table>
 
 
@@ -72,6 +75,7 @@
 
 
 
+
 ### Outputs
 
 <table>
@@ -79,7 +83,7 @@
         <th>:arrow_right:</th>
         <td style="padding:6px">
             <ul>
-                <li>Displays general memory information, such as used Memory Slots and Capacity, Speed, Manufacturer, Part Number, Type and Serial Number of individual Memory Modules and also Total number of Memory Slots in Use, Total Physical Memory and both Memory in Use and Available Memory as Size and as Percentage, Number of Processes running, Average CPU Load, Physical Memory in Use and C:-Drive Usage in console.</li>
+                <li>Displays general memory information, such as used Memory Slots and Capacity, Speed, Manufacturer, Part Number, Type and Serial Number of individual Memory Modules and also Total number of Memory Slots in Use, Total Physical Memory and both Memory in Use and Available Memory as Size and as Percentage, Number of Processes running, Average CPU Load, Physical Memory in Use, C:-Drive Usage and Operating System Architecture in console.</li>
             </ul>
         </td>
     </tr>
@@ -183,7 +187,7 @@
                 </p>
                 <p>
                     <li><code>New-Item -ItemType File -Path C:\Temp\Get-RAMInfo.ps1</code><br />
-                    Creates an empty ps1-file to the <code>C:\Temp</code> directory. The <code>New-Item</code> cmdlet has an inherent <code>-NoClobber</code> mode built into it, so that the procedure will halt, if overwriting (replacing the contents) of an existing file is about to happen. Overwriting a file with the <code>New-Item</code> cmdlet requires using the <code>Force</code>.<br /> 
+                    Creates an empty ps1-file to the <code>C:\Temp</code> directory. The <code>New-Item</code> cmdlet has an inherent <code>-NoClobber</code> mode built into it, so that the procedure will halt, if overwriting (replacing the contents) of an existing file is about to happen. Overwriting a file with the <code>New-Item</code> cmdlet requires using the <code>Force</code>.<br />
                     For more information, please type "<code>help New-Item -Full</code>".</li>
                 </p>
             </ol>
@@ -203,17 +207,17 @@
       <th><img class="emoji" title="contributing" alt="contributing" height="28" width="28" align="absmiddle" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f33f.png"></th>
       <td style="padding:6px"><strong>Bugs:</strong></td>
       <td style="padding:6px"><a href="https://github.com/auberginehill/get-ram-info/issues">Submit bugs</a> and help us verify fixes.</td>
-   </tr> 
+   </tr>
    <tr>
       <th rowspan="2"></th>
       <td style="padding:6px"><strong>Feature Requests:</strong></td>
       <td style="padding:6px">Feature request can be submitted by <a href="https://github.com/auberginehill/get-ram-info/issues">creating an Issue</a>.</td>
-   </tr> 
+   </tr>
    <tr>
       <td style="padding:6px"><strong>Edit Source Files:</strong></td>
       <td style="padding:6px"><a href="https://github.com/auberginehill/get-ram-info/pulls">Submit pull requests</a> for bug fixes and features and discuss existing proposals.</td>
    </tr>
- </table>   
+ </table>
 
 
 
@@ -234,7 +238,7 @@
     </tr>
     <tr>
         <td style="padding:6px"><a href="https://msdn.microsoft.com/en-us/library/aa394347(v=vs.85).aspx">Win32_PhysicalMemory class</a></td>
-    </tr>    
+    </tr>
 </table>
 
 
@@ -245,26 +249,47 @@
  <table>
     <tr>
         <th><img class="emoji" title="www" alt="www" height="28" width="28" align="absmiddle" src="https://assets-cdn.github.com/images/icons/emoji/unicode/0023-20e3.png"></th>
-        <td style="padding:6px"><a href="https://github.com/auberginehill/get-battery-info">Get-BatteryInfo</a></td>       
+        <td style="padding:6px"><a href="https://github.com/auberginehill/firefox-customization-files">Firefox Customization Files</a></td>
     </tr>
     <tr>
-        <th rowspan="7"></th>
-        <td style="padding:6px"><a href="https://github.com/auberginehill/get-computer-info">Get-ComputerInfo</a></td>     
+        <th rowspan="14"></th>
+        <td style="padding:6px"><a href="https://github.com/auberginehill/get-ascii-table">Get-AsciiTable</a></td>
+    </tr>
+    <tr>
+        <td style="padding:6px"><a href="https://github.com/auberginehill/get-battery-info">Get-BatteryInfo</a></td>
+    </tr>
+    <tr>
+        <td style="padding:6px"><a href="https://github.com/auberginehill/get-computer-info">Get-ComputerInfo</a></td>
     </tr>
     <tr>
         <td style="padding:6px"><a href="https://github.com/auberginehill/get-directory-size">Get-DirectorySize</a></td>
     </tr>
     <tr>
         <td style="padding:6px"><a href="https://github.com/auberginehill/get-installed-programs">Get-InstalledPrograms</a></td>
-    </tr>    
-    <tr>        
-        <td style="padding:6px"><a href="https://github.com/auberginehill/get-installed-windows-updates">Get-InstalledWindowsUpdates</a></td>  
     </tr>
     <tr>
-        <td style="padding:6px"><a href="https://gist.github.com/auberginehill/eb07d0c781c09ea868123bf519374ee8">Get-TimeDifference</a></td> 
+        <td style="padding:6px"><a href="https://github.com/auberginehill/get-installed-windows-updates">Get-InstalledWindowsUpdates</a></td>
     </tr>
     <tr>
-        <td style="padding:6px"><a href="https://github.com/auberginehill/get-unused-drive-letters">Get-UnusedDriveLetters</a></td> 
+        <td style="padding:6px"><a href="https://gist.github.com/auberginehill/eb07d0c781c09ea868123bf519374ee8">Get-TimeDifference</a></td>
+    </tr>
+    <tr>
+        <td style="padding:6px"><a href="https://github.com/auberginehill/get-time-zone-table">Get-TimeZoneTable</a></td>
+    </tr>
+    <tr>
+        <td style="padding:6px"><a href="https://github.com/auberginehill/get-unused-drive-letters">Get-UnusedDriveLetters</a></td>
+    </tr>
+    <tr>
+        <td style="padding:6px"><a href="https://github.com/auberginehill/emoji-table">Emoji Table</a></td>
+    </tr>
+    <tr>
+        <td style="padding:6px"><a href="https://github.com/auberginehill/java-update">Java-Update</a></td>
+    </tr>
+    <tr>
+        <td style="padding:6px"><a href="https://github.com/auberginehill/rock-paper-scissors">Rock-Paper-Scissors</a></td>
+    </tr>
+    <tr>
+        <td style="padding:6px"><a href="https://github.com/auberginehill/toss-a-coin">Toss-a-Coin</a></td>
     </tr>
     <tr>
         <td style="padding:6px"><a href="https://github.com/auberginehill/update-adobe-flash-player">Update-AdobeFlashPlayer</a></td>
